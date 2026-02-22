@@ -1,0 +1,32 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test-with-act:
+    name: Test loudbinary-start.yaml with act
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install act
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/nektos/act/master/install.sh \
+            | sudo bash -s -- -b /usr/local/bin
+
+      - name: Make test executable
+        run: chmod +x tests/test_act.sh
+
+      # Pass the current checkout so the test runs against PR changes,
+      # not the published main branch.
+      - name: Run tests
+        run: bash tests/test_act.sh "$GITHUB_WORKSPACE"
