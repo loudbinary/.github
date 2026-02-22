@@ -1,0 +1,17 @@
+product: loudbinary
+description: Loudbinary product start configuration
+
+# Jobs executed when this product is dispatched via the catch-all workflow.
+# The workflow runs inside the 'loudbinary' GitHub Environment so that
+# environment-level secrets/variables (including PRODUCT=loudbinary) are
+# available to every step.
+#
+# TODO (admin): ensure the 'loudbinary' GitHub Environment exists in this
+# repository and that the variable PRODUCT=loudbinary is set on it.
+jobs:
+  - name: sync
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run sync script
+        run: python scripts/sync.py
