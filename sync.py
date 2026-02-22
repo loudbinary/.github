@@ -12,8 +12,11 @@ PRODUCTS_FILE = "products.json"
 
 def load_registry():
     if os.path.exists(PRODUCTS_FILE):
-        with open(PRODUCTS_FILE) as f:
-            return json.load(f)
+        try:
+            with open(PRODUCTS_FILE) as f:
+                return json.load(f)
+        except json.JSONDecodeError as e:
+            raise SystemExit(f"ERROR: {PRODUCTS_FILE} contains invalid JSON: {e}") from e
     return {"products": []}
 
 
